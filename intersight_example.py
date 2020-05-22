@@ -31,7 +31,7 @@
 '''
 __author__ = 'Rickard Ostman'
 __copyright__ = 'Copyright 2020, Miradot AB'
-__license__ = 'GPL'
+__license__ = 'MIT'
 __version__ = '1.0'
 __maintainer__ = 'Rickard Ostman'
 __email__ = 'rickard.ostman@miradot.se'
