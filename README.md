@@ -24,7 +24,8 @@ export INTERSIGHT_PUBLIC_KEY_PATH="./intersight/api_key"
 python intersight_example.py
 ```
 
-### DevNet Sandbox
+### DevNet resources
+If you want to try this out in a demo-environment, have a look at the following resources
 
 1. [Devnet Learning Labs](https://developer.cisco.com/learning/modules/intersight-rest-api)
 2. [DevNet Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/a63216d2-e891-4856-9f27-309ca61ec862?diagramType=Topology) 
