@@ -26,8 +26,8 @@ python intersight_example.py
 
 ### DevNet Sandbox
 
-[Devnet Learning Labs](https://developer.cisco.com/learning/modules/intersight-rest-api)
-[DevNet Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/a63216d2-e891-4856-9f27-309ca61ec862?diagramType=Topology) 
+1. [Devnet Learning Labs](https://developer.cisco.com/learning/modules/intersight-rest-api)
+2. [DevNet Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/a63216d2-e891-4856-9f27-309ca61ec862?diagramType=Topology) 
 
 ## Known issues
 
