@@ -12,6 +12,7 @@ pip install -r requirements.txt
 ```
 
 ## Configuration
+In order to get authentication set up, you need to add an API key to your intersight environment. See [this link](https://community.cisco.com/t5/data-center-documents/intersight-api-overview/ta-p/3651994) for information on how to get this done. Once you've downloaded the secret_key and the api_key, save those to individual files and reference them using environment variables as described below:
 
 ```
 export INTERSIGHT_PRIVATE_KEY_PATH="./intersight/secret_key"
