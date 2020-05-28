@@ -39,6 +39,8 @@ __status__ = 'Prototype'
 
 import intersight_rest
 import traceback
+import OpenSSL.crypto
+import requests
 import os
 
 def query_intersight(options):
@@ -52,12 +54,19 @@ def query_intersight(options):
         Raises:
             Nothing. It will just inform the user there was an error and terminate the program
     '''
+
     try:
-        query_results = intersight_rest.intersight_call(**options)
-        return query_results.json()
-    except Exception as e:
-        print('unknown error from intersight_rest - exiting: {}'.format(traceback.format_exc()))
-        exit()
+        request = intersight_rest.intersight_call(**options)
+        request.raise_for_status()
+    except requests.exceptions.HTTPError:
+        if request.status_code == 401:
+            print('The supplied credentials wasnt accepted by Intersight - please check them')
+            exit()
+        else:
+            print('There was a problem communicating with intersight')
+            exit()
+
+    return request.json()
 
 def get_data_from_intersight(apipath, query_params={}):
     '''
@@ -75,7 +84,6 @@ def get_data_from_intersight(apipath, query_params={}):
         "resource_path": apipath,
         "query_params": query_params
     }
-
     return query_intersight(options)
 
 def main():
@@ -91,18 +99,41 @@ def main():
         print('\t- INTERSIGHT_PUBLIC_KEY_PATH')
         exit()
 
-    # try applying our credentials to intersight_rest
+    # load, validate and apply the private key to intersight_rest
     try:
         private_key = open(private_key_path, "r") .read()
-        intersight_rest.set_private_key(private_key)
 
+        # because of poor exception handling in intersight_rest, we're using pyopenssl to validate the private key
+        OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, private_key)
+
+        # if we've gotten this far we've successfully validated the private key file. Let's apply it
+        intersight_rest.set_private_key(private_key)
+    except FileNotFoundError:
+        print('The referenced private key file couldnt be found - please verify the supplied path: {}'.format(
+            private_key_path))
+        exit()
+    except OpenSSL.crypto.Error:
+        print('Theres a format error in the referenced private key_file - please check it')
+        exit()
+    except Exception as e:
+        print('There was an unknown error related to your private_key: "{}"'.format(str(e)))
+        print('Please raise an issue via github and supply the following stack trace:')
+        print(traceback.format_exc())
+        exit()
+
+    # load and apply the public_key to intersight_rest
+    try:
         public_key = open(public_key_path, "r") .read()
         intersight_rest.set_public_key(public_key)
     except FileNotFoundError:
-        print('There was a problem reading your credentials - please verify their paths')
+        print('The referenced public key file couldnt be found  - please verify the supplied path: {}'.format(
+            public_key_path))
         exit()
     except Exception as e:
-        print('There was an error using your credentials: {}'.format(str(e)))
+        print('There was an unknown error related to your public_key: "{}"'.format(str(e)))
+        print('Please raise an issue via github and supply the following stack trace:')
+        print(traceback.format_exc())
+        exit()
 
     # now that we're good to go, get the data we want to present to our user
     compute_physicalsummery = get_data_from_intersight('/compute/PhysicalSummaries', query_params={})

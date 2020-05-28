@@ -17,8 +17,8 @@ pip install -r requirements.txt
 In order to get authentication set up, you need to add an API key to your intersight environment. See [this link](https://community.cisco.com/t5/data-center-documents/intersight-api-overview/ta-p/3651994) for information on how to get this done. Once you've downloaded the secret_key and the api_key, save those to individual files and reference them using environment variables as described below:
 
 ```
-export INTERSIGHT_PRIVATE_KEY_PATH="./intersight/secret_key"
-export INTERSIGHT_PUBLIC_KEY_PATH="./intersight/api_key"
+export INTERSIGHT_PRIVATE_KEY_PATH="./intersight/secret_key" // this would be the Secret key from Intersight
+export INTERSIGHT_PUBLIC_KEY_PATH="./intersight/api_key" // this would be the API Key ID from Intersight
 ```
 
 ## Usage
@@ -34,8 +34,9 @@ If you want to try this out in a demo-environment, have a look at the following 
 2. [DevNet Sandbox](https://devnetsandbox.cisco.com/RM/Diagram/Index/a63216d2-e891-4856-9f27-309ca61ec862?diagramType=Topology) 
 
 ## Known issues
-
-intersight_rest doesnt do proper exception handling, so in this tool an authentication error is going to be presented as a generic error.
+The intersight_rest module will not check the format of the supplied credentials on its, so we had to do that using pyopenssl
+We've done a pretty lazy error handling on the Intersight query-method, so that should be extended before this prototype is used as a boiler plate
+for something thats going into production.
 
 ## Getting help
 
